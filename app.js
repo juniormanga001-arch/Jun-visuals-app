@@ -26,32 +26,50 @@ async function load(){
   $("apiStatus").textContent="EN LIGNE";
  }catch(e){render(fallback);$("apiStatus").textContent="EN LIGNE (mode secours)";}
 }
-$("orderForm").addEventListener("submit",async e=>{
+$("orderForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const s=services[$("serviceSelect").value];
 
-  const payload={
-    name:$("customerName").value,
-    contact:$("phone").value,
-    service:s?.name||"Service",
-    details:$("description").value,
-    price:s?.price||""
+  const name = $("customerName").value.trim();
+  const contact = $("phone").value.trim();
+  const description = $("description").value.trim();
+  const serviceSelect = $("serviceSelect");
+  const s = services[serviceSelect.value];
+
+  if (!name || !contact || !description) {
+    $("result").textContent = "Veuillez remplir tous les champs.";
+    return;
+  }
+
+  const payload = {
+    name: name,
+    contact: contact,
+    service: s?.name || "Service",
+    details: description,
+    price: s?.price || ""
   };
 
-  $("result").textContent="Envoi de la commande...";
+  $("result").textContent = "Envoi de la commande...";
 
-  try{
-    const r=await fetch(API+"/api/orders",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(payload)
+  try {
+    const r = await fetch(API + "/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     });
-    const data=await r.json();
-    if(!r.ok)throw Error(data.message||"Erreur");
-    $("result").textContent="Commande envoyée avec succès !";
+
+    const data = await r.json();
+
+    if (!r.ok) {
+      throw new Error(data.message || "Erreur lors de l'envoi.");
+    }
+
+    $("result").textContent = "Commande envoyée avec succès !";
     e.target.reset();
-  }catch(err){
-    $("result").textContent="Le serveur n'a pas accepté la commande.";
+
+  } catch (err) {
+    $("result").textContent = "Erreur : " + err.message;
   }
 });
 load(); 
