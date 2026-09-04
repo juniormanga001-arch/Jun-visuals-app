@@ -27,16 +27,31 @@ async function load(){
  }catch(e){render(fallback);$("apiStatus").textContent="EN LIGNE (mode secours)";}
 }
 $("orderForm").addEventListener("submit",async e=>{
- e.preventDefault();
- const s=services[+$("serviceSelect").value];
- const payload={service:s?.name||s?.title||"Service JUN VISUALS",customerName:$("customerName").value,phone:$("phone").value,description:$("description").value};
- $("result").textContent="Envoi de la commande…";
- try{
-  const r=await fetch(API+"/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-  const data=await r.json();
-  if(!r.ok)throw Error(data.message||"Erreur");
-  $("result").textContent="Commande envoyée avec succès. Référence : "+(data.id||data.orderId||"reçue");
-  e.target.reset();
- }catch(err){$("result").textContent="Le serveur n'a pas accepté la commande pour le moment. Vérifie les champs et réessaie.";}
+  e.preventDefault();
+  const s=services[$("serviceSelect").value];
+
+  const payload={
+    name:$("customerName").value,
+    contact:$("phone").value,
+    service:s?.name||"Service",
+    details:$("description").value,
+    price:s?.price||""
+  };
+
+  $("result").textContent="Envoi de la commande...";
+
+  try{
+    const r=await fetch(API+"/api/orders",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    });
+    const data=await r.json();
+    if(!r.ok)throw Error(data.message||"Erreur");
+    $("result").textContent="Commande envoyée avec succès !";
+    e.target.reset();
+  }catch(err){
+    $("result").textContent="Le serveur n'a pas accepté la commande.";
+  }
 });
-load();
+load(); 
