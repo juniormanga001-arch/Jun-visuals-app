@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUN VISUALS — Admin</title>
+<style>
+body{margin:0;background:#090909;color:#fff;font-family:Arial,sans-serif;padding:20px}
+h1{color:#d9a62e}
+button{background:#d9a62e;border:0;padding:12px 18px;border-radius:8px;font-weight:bold}
+input{padding:12px;border-radius:8px;border:1px solid #555;background:#151515;color:white;width:90%;margin:10px 0}
+.card{background:#151515;border:1px solid #333;border-radius:12px;padding:15px;margin:15px 0}
+.small{color:#aaa}
+</style>
+</head>
+<body>
+
+<h1>JUN VISUALS</h1>
+<h2>Tableau de bord</h2>
+
+<input id="key" type="password" placeholder="Clé admin">
+<br>
+<button onclick="charger()">Voir les commandes</button>
+
+<div id="result"></div>
+
+<script>
+const API="https://jun-visuals-backend.onrender.com";
+
+async function charger(){
+  const key=document.getElementById("key").value;
+  const result=document.getElementById("result");
+  result.innerHTML="Chargement...";
+
+  try{
+    const r=await fetch(API+"/api/orders",{
+      headers:{"x-admin-key":key}
+    });
+
+    const data=await r.json();
+
+    if(!r.ok) throw new Error(data.error||"Accès refusé");
+
+    result.innerHTML=data.length
+      ? data.map(o=>`
+        <div class="card">
+          <b>${o.service}</b>
+          <p>Client : ${o.name}</p>
+          <p>Téléphone : ${o.contact}</p>
+          <p>Description : ${o.details}</p>
+          <p>Prix : ${o.price}</p>
+          <p>Statut : ${o.status}</p>
+          <p class="small">${o.createdAt}</p>
+        </div>
+      `).join("")
+      : "<p>Aucune commande.</p>";
+
+  }catch(e){
+    result.innerHTML="<p>"+e.message+"</p>";
+  }
+}
+</script>
+
+</body>
+</html>
