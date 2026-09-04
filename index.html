@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css">
+<title>JUN VISUALS</title>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span>JUN</span><b>VISUALS</b></div>
+  <button id="menuBtn" class="icon-btn" aria-label="Menu">☰</button>
+</header>
+
+<main>
+<section class="hero">
+  <div class="eyebrow">PHOTO • DESIGN • VIDÉO • CRÉATIVITÉ</div>
+  <h1>PLUS QU’UNE<br><span>APPLICATION</span><br>UNE VISION.</h1>
+  <p>Transforme tes idées en visuels d’exception.</p>
+  <button class="gold-btn" onclick="show('services')">Découvrir nos services</button>
+</section>
+
+<section id="services" class="section">
+  <div class="section-head"><h2>Nos services</h2><span>JUN VISUALS</span></div>
+  <div id="serviceGrid" class="grid"></div>
+</section>
+
+<section id="order" class="section order-card">
+  <div class="section-head"><h2>Commander</h2><span>EN LIGNE</span></div>
+  <form id="orderForm">
+    <label>Service<select id="serviceSelect" required></select></label>
+    <label>Nom<input id="customerName" required placeholder="Votre nom"></label>
+    <label>Téléphone<input id="phone" required placeholder="+243 ..."></label>
+    <label>Description<textarea id="description" rows="4" placeholder="Décris ton projet"></textarea></label>
+    <button class="gold-btn" type="submit">Envoyer la commande</button>
+  </form>
+  <div id="result" class="result"></div>
+</section>
+
+<section id="status" class="section">
+  <div class="section-head"><h2>Suivi</h2><span>COMMANDES</span></div>
+  <div class="status-box">Connecté au serveur JUN VISUALS : <strong id="apiStatus">vérification…</strong></div>
+</section>
+</main>
+
+<nav class="bottom-nav">
+  <button onclick="show('services')">⌂<small>Accueil</small></button>
+  <button onclick="show('services')">✦<small>Services</small></button>
+  <button onclick="show('order')">＋<small>Commander</small></button>
+  <button onclick="show('status')">◉<small>Suivi</small></button>
+</nav>
+
+<div id="drawer" class="drawer hidden">
+  <button class="close" onclick="toggleMenu()">×</button>
+  <div class="brand big"><span>JUN</span><b>VISUALS</b></div>
+  <button onclick="show('services');toggleMenu()">Services</button>
+  <button onclick="show('order');toggleMenu()">Commander</button>
+  <button onclick="show('status');toggleMenu()">Suivre une commande</button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

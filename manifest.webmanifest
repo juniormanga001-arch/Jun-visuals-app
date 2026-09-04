@@ -1,0 +1,9 @@
+{
+  "name":"JUN VISUALS",
+  "short_name":"JUN VISUALS",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#080808",
+  "theme_color":"#080808",
+  "description":"JUN VISUALS — photo, design et créativité"
+}
