@@ -48,7 +48,7 @@ $("orderForm").addEventListener("submit", async (e) => {
     price: s?.price || ""
   };
 
-  $("result").textContent = "Envoi de la commande...";
+  $("result").textContent = "";
 
   try {
     const r = await fetch(API + "/api/orders", {
